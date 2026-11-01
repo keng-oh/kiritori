@@ -1,0 +1,15 @@
+{{define "title"}}{{.Clip.Title}} - キリトリ{{end}}
+{{define "head"}}
+<meta property="og:type" content="video.other">
+<meta property="og:title" content="{{.Clip.Title}}">
+<meta property="og:image" content="https://i.ytimg.com/vi/{{.Clip.SourceID}}/hqdefault.jpg">
+<meta name="twitter:card" content="summary_large_image">
+{{end}}
+{{define "content"}}
+<h1>{{.Clip.Title}}</h1>
+<div class="player-box"><div id="player"
+  data-video-id="{{.Clip.SourceID}}" data-start="{{.Clip.StartSec}}" data-end="{{.Clip.EndSec}}"></div></div>
+<p class="meta">{{.Clip.StartSec}}秒 〜 {{.Clip.EndSec}}秒（{{.Length}}秒）{{if .Clip.SourceTitle}} / 元動画: {{.Clip.SourceTitle}}{{end}}</p>
+<p id="after" class="after">続きは元の動画でどうぞ → <a href="https://www.youtube.com/watch?v={{.Clip.SourceID}}&amp;t={{.Clip.EndSec}}s" target="_blank" rel="noopener">YouTubeで続きを見る</a></p>
+{{end}}
+{{define "scripts"}}<script src="/static/watch.js"></script>{{end}}

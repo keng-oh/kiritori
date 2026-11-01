@@ -15,10 +15,11 @@ YouTube動画の好きな場面を時間指定でクリップし、リンクで�
 ## 開発
 
 ```
-cp .env.example .env   # 初回のみ。POSTGRES_PASSWORD を変更する
-docker compose up -d   # PostgreSQL 起動
-make run    # http://localhost:8080/healthz
-make test
+cp .env.example .env   # 初回のみ。POSTGRES_PASSWORD を変更し、DATABASE_URL も揃える
+docker compose up -d   # PostgreSQL 起動（ホスト側ポートは POSTGRES_PORT、既定 5433）
+set -a; . ./.env; set +a
+make run               # 起動時に migration を自動適用。http://localhost:8080
+make test              # DATABASE_URL があればDB統合テストも実行
 ```
 
 環境変数は `.env.example` を参照。

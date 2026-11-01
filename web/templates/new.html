@@ -1,0 +1,24 @@
+{{define "title"}}クリップを作る - キリトリ{{end}}
+{{define "content"}}
+<h1>クリップを作る</h1>
+{{if .Error}}<p class="error">{{.Error}}</p>{{end}}
+<form method="post" action="/clips" id="clip-form">
+  <label>YouTubeのURL
+    <input type="text" name="url" id="url" value="{{.Form.URL}}" placeholder="https://www.youtube.com/watch?v=..." required>
+  </label>
+  <div id="player-wrap" hidden><div id="player"></div></div>
+  <div class="times">
+    <label>開始（秒）<input type="number" name="start" id="start" min="0" value="{{.Form.Start}}" required></label>
+    <button type="button" id="set-start">再生位置を開始にする</button>
+    <label>終了（秒）<input type="number" name="end" id="end" min="1" value="{{.Form.End}}" required></label>
+    <button type="button" id="set-end">再生位置を終了にする</button>
+  </div>
+  <p class="hint">長さは1〜60秒です。<span id="length"></span></p>
+  <button type="button" id="preview" hidden>この範囲をプレビュー</button>
+  <label>クリップのタイトル
+    <input type="text" name="title" maxlength="100" value="{{.Form.Title}}" required>
+  </label>
+  <button type="submit" class="button">保存</button>
+</form>
+{{end}}
+{{define "scripts"}}<script src="/static/new.js"></script>{{end}}

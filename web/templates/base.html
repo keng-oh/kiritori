@@ -1,0 +1,16 @@
+{{define "base"}}<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{block "title" .}}キリトリ{{end}}</title>
+{{block "head" .}}{{end}}
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header><a href="/" class="logo">キリトリ</a><a href="/new">クリップを作る</a></header>
+<main>{{block "content" .}}{{end}}</main>
+<footer>動画は保存していません。再生はYouTube公式の埋め込みプレーヤーで行われます。</footer>
+{{block "scripts" .}}{{end}}
+</body>
+</html>{{end}}
