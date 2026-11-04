@@ -11,7 +11,13 @@ func openTest(t *testing.T) *Store {
 	t.Helper()
 	url := os.Getenv("DATABASE_URL")
 	if url == "" {
+		if os.Getenv("CI") != "" {
+			t.Fatal("DATABASE_URL must be set in CI")
+		}
 		t.Skip("DATABASE_URL not set")
+	}
+	if err := Migrate(context.Background(), url); err != nil {
+		t.Fatal(err)
 	}
 	s, err := Open(context.Background(), url)
 	if err != nil {

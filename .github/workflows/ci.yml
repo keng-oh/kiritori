@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgres://kiritori:kiritori@localhost:5432/kiritori?sslmode=disable
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: kiritori
+          POSTGRES_PASSWORD: kiritori
+          POSTGRES_DB: kiritori
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U kiritori"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - run: make fmt-check
+      - run: make vet
+      - run: go test -count=1 ./...

@@ -20,6 +20,7 @@ docker compose up -d   # PostgreSQL 起動（ホスト側ポートは POSTGRES_P
 set -a; . ./.env; set +a
 make run               # 起動時に migration を自動適用。http://localhost:8080
 make test              # DATABASE_URL があればDB統合テストも実行
+make check             # CIと同じチェック（gofmt・go vet・テスト）
 ```
 
 環境変数は `.env.example` を参照。
