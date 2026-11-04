@@ -25,6 +25,18 @@ make check             # CIと同じチェック（gofmt・go vet・テスト）
 
 環境変数は `.env.example` を参照。
 
+### Google ログイン（任意）
+
+`GOOGLE_CLIENT_ID` を設定したときだけログイン機能が有効になる（未設定なら `/login` は 404 で、ヘッダーにも出ない）。
+取得するのは Google の `sub`（識別子）だけで、氏名・メールアドレスは要求も保存もしない。
+
+1. [Google Cloud Console](https://console.cloud.google.com/) で OAuth 同意画面を作り、公開状態は「テスト」のまま、自分をテストユーザーに追加する
+2. 「認証情報」から OAuth クライアント ID（種類: ウェブアプリケーション）を作る
+3. 「承認済みのリダイレクト URI」に `http://localhost:8080/auth/callback` を登録する
+4. `.env` に `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` を書き、`KIRITORI_BASE_URL=http://localhost:8080` を設定する
+
+`KIRITORI_BASE_URL` に `/auth/callback` を足したものがリダイレクト URI になる。クライアントシークレットはコミットしない。
+
 ## 構成
 
 ```
