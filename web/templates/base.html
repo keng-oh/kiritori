@@ -8,7 +8,9 @@
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<header><a href="/" class="logo">キリトリ</a><a href="/new">クリップを作る</a></header>
+<header><a href="/" class="logo">キリトリ</a><a href="/new">クリップを作る</a>
+{{if .LoginEnabled}}{{if .User}}<form method="post" action="/logout" class="logout"><button type="submit">ログアウト</button></form>{{else}}<a href="/login">ログイン</a>{{end}}{{end}}
+</header>
 <main>{{block "content" .}}{{end}}</main>
 <footer>動画は保存していません。再生はYouTube公式の埋め込みプレーヤーで行われます。</footer>
 {{block "scripts" .}}{{end}}

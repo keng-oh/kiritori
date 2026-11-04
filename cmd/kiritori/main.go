@@ -5,8 +5,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
+	"kiritori/internal/auth"
 	"kiritori/internal/server"
 	"kiritori/internal/store"
 	"kiritori/internal/youtube"
@@ -33,7 +35,15 @@ func main() {
 	}
 	defer st.Close()
 
-	h, err := server.New(server.Deps{Store: st, Resolver: youtube.NewClient()})
+	deps := server.Deps{Store: st, Resolver: youtube.NewClient()}
+	if clientID := os.Getenv("GOOGLE_CLIENT_ID"); clientID != "" {
+		baseURL := strings.TrimRight(os.Getenv("KIRITORI_BASE_URL"), "/")
+		deps.Auth = auth.NewGoogle(ctx, clientID, os.Getenv("GOOGLE_CLIENT_SECRET"), baseURL+"/auth/callback")
+		deps.Sessions = st
+	} else {
+		log.Print("GOOGLE_CLIENT_ID is not set: login is disabled")
+	}
+	h, err := server.New(deps)
 	if err != nil {
 		log.Fatal(err)
 	}
